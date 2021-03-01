@@ -1,18 +1,22 @@
-cmake_minimum_required(VERSION 3.14)
 project(StardustDevEnvironment)
+cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_CXX_STANDARD 17)
 
 IF(MSVC)
     add_definitions(-DWITHOUT_POSIX)
-    add_subdirectory(3rdparty/BWAPILIB)
+    include_directories(SYSTEM
+        ${CMAKE_SOURCE_DIR}/3rdparty/BWAPILIB/include
+        ${CMAKE_SOURCE_DIR}/3rdparty
+    )
+    add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/BWAPILIB)
 ELSE(MSVC)
     set(OPENBW_DIR ${CMAKE_SOURCE_DIR}/3rdparty/openbw/openbw)
 
     add_subdirectory(3rdparty/openbw/bwapi)
 ENDIF(MSVC)
 
-add_subdirectory(3rdparty/zstd/build/cmake)
+add_subdirectory(3rdparty/zstd-1.4.0/build/cmake)
 add_subdirectory(src)
 
 IF(NOT MSVC)

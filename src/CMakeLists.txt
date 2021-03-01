@@ -3,12 +3,17 @@ project(DemoAIModule)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(${CMAKE_SOURCE_DIR}/3rdparty)
+include_directories(
+        SYSTEM
+        ${CMAKE_SOURCE_DIR}/3rdparty
+        ${CMAKE_SOURCE_DIR}/3rdparty/BWAPILIB/include/BWAPI
+)
 
 set(SRC_INCLUDES
+        ${CMAKE_SOURCE_DIR}/3rdparty/BWAPILIB/include/BWAPI
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/Instrumentation
-        )
+)
 include_directories(${SRC_INCLUDES})
 
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR} *.cpp)
