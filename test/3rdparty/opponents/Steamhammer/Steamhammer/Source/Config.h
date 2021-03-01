@@ -3,6 +3,7 @@
 #include "BWAPI.h"
 #include <cassert>
 
+namespace UAlbertaBot {
 namespace Config
 {
     extern std::string StardustTestStrategyName;
@@ -70,7 +71,7 @@ namespace Config
 
     namespace Tournament
     {
-        extern int GameEndFrame;	
+        extern int GameEndFrame;
     }
 
     namespace Debug
@@ -114,10 +115,10 @@ namespace Config
         extern bool WorkersDefendRush;
         extern int RetreatMeleeUnitShields;
         extern int RetreatMeleeUnitHP;
-        extern int CombatSimRadius;         
+        extern int CombatSimRadius;
 		extern int ScoutDefenseRadius;
 	}
-    
+
     namespace Macro
     {
         extern int BOSSFrameLimit;
@@ -134,4 +135,5 @@ namespace Config
     {
         extern int MAP_GRID_SIZE;
     }
+}
 }
