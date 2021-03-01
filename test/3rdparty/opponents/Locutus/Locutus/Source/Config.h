@@ -3,6 +3,7 @@
 #include "BWAPI.h"
 #include <cassert>
 
+namespace Locutus {
 namespace Config
 {
     extern std::string StardustTestStrategyName;
@@ -123,4 +124,5 @@ namespace Config
     {
         extern int MAP_GRID_SIZE;
     }
+}
 }

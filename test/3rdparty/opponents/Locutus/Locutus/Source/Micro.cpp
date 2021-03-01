@@ -6,7 +6,7 @@ const double pi = 3.14159265358979323846;
 
 namespace { auto & bwebMap = BWEB::Map::Instance(); }
 
-using namespace Locutus;
+namespace Locutus{
 
 size_t TotalCommands = 0;
 
@@ -68,12 +68,12 @@ void Micro::AttackUnit(BWAPI::Unit attacker, BWAPI::Unit target)
     {
 		return;
     }
-	
+
     // if nothing prevents it, attack the target
     attacker->attack(target);
     TotalCommands++;
 
-    if (Config::Debug::DrawUnitTargetInfo) 
+    if (Config::Debug::DrawUnitTargetInfo)
     {
         BWAPI::Broodwar->drawCircleMap(attacker->getPosition(), dotRadius, BWAPI::Colors::Red, true);
         BWAPI::Broodwar->drawCircleMap(target->getPosition(), dotRadius, BWAPI::Colors::Red, true);
@@ -108,7 +108,7 @@ void Micro::AttackMove(BWAPI::Unit attacker, const BWAPI::Position & targetPosit
 	attacker->attack(targetPosition);
     TotalCommands++;
 
-    if (Config::Debug::DrawUnitTargetInfo) 
+    if (Config::Debug::DrawUnitTargetInfo)
     {
         BWAPI::Broodwar->drawCircleMap(attacker->getPosition(), dotRadius, BWAPI::Colors::Orange, true);
         BWAPI::Broodwar->drawCircleMap(targetPosition, dotRadius, BWAPI::Colors::Orange, true);
@@ -154,9 +154,9 @@ void Micro::Move(BWAPI::Unit attacker, const BWAPI::Position & targetPosition)
     BWAPI::UnitCommand currentCommand(attacker->getLastCommand());
 
     // if we've already told this unit to move to this position, ignore this command
-    if (!attacker->isStuck() && 
-        (currentCommand.getType() == BWAPI::UnitCommandTypes::Move) && 
-        (currentCommand.getTargetPosition() == targetPosition) && 
+    if (!attacker->isStuck() &&
+        (currentCommand.getType() == BWAPI::UnitCommandTypes::Move) &&
+        (currentCommand.getTargetPosition() == targetPosition) &&
         attacker->isMoving())
     {
         return;
@@ -166,7 +166,7 @@ void Micro::Move(BWAPI::Unit attacker, const BWAPI::Position & targetPosition)
 	attacker->move(targetPosition);
     TotalCommands++;
 
-    if (Config::Debug::DrawUnitTargetInfo) 
+    if (Config::Debug::DrawUnitTargetInfo)
     {
         BWAPI::Broodwar->drawCircleMap(attacker->getPosition(), dotRadius, BWAPI::Colors::White, true);
         BWAPI::Broodwar->drawCircleMap(targetPosition, dotRadius, BWAPI::Colors::White, true);
@@ -206,7 +206,7 @@ void Micro::RightClick(BWAPI::Unit unit, BWAPI::Unit target)
     unit->rightClick(target);
     TotalCommands++;
 
-    if (Config::Debug::DrawUnitTargetInfo) 
+    if (Config::Debug::DrawUnitTargetInfo)
     {
         BWAPI::Broodwar->drawCircleMap(unit->getPosition(), dotRadius, BWAPI::Colors::Cyan, true);
         BWAPI::Broodwar->drawCircleMap(target->getPosition(), dotRadius, BWAPI::Colors::Cyan, true);
@@ -266,7 +266,7 @@ void Micro::Repair(BWAPI::Unit unit, BWAPI::Unit target)
     unit->repair(target);
     TotalCommands++;
 
-    if (Config::Debug::DrawUnitTargetInfo) 
+    if (Config::Debug::DrawUnitTargetInfo)
     {
         BWAPI::Broodwar->drawCircleMap(unit->getPosition(), dotRadius, BWAPI::Colors::Cyan, true);
         BWAPI::Broodwar->drawCircleMap(target->getPosition(), dotRadius, BWAPI::Colors::Cyan, true);
@@ -536,4 +536,5 @@ BWAPI::Position Micro::GetKiteVector(BWAPI::Unit unit, BWAPI::Unit target)
     double fleeAngle = atan2(fleeVec.y, fleeVec.x);
     fleeVec = BWAPI::Position(static_cast<int>(64 * cos(fleeAngle)), static_cast<int>(64 * sin(fleeAngle)));
     return fleeVec;
+}
 }
