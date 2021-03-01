@@ -1,7 +1,7 @@
 #include "BWTest.h"
 
 #include "BW/BWData.h"
-#include "DemoAIModule.h"
+//#include "DemoAIModule.h"
 #include <chrono>
 #include <future>
 //#include <thread>
@@ -343,9 +343,9 @@ bool BWTest::runGame(bool opponent)
         }
         else
         {
-            auto demoModule = new DemoAIModule();
-            if (initialUnitFrames > 0) demoModule->frameSkip = initialUnitFrames + BWAPI::Broodwar->getLatencyFrames();
-            module = demoModule;
+            //auto demoModule = new DemoAIModule();
+            //if (initialUnitFrames > 0) demoModule->frameSkip = initialUnitFrames + BWAPI::Broodwar->getLatencyFrames();
+            //module = demoModule;
         }
         module->afterOnStart = [this, &h]()
         {

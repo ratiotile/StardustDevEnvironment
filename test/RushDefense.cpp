@@ -10,7 +10,7 @@ TEST(RushDefense, Steamhammer9PoolSpeed)
     test.opponentModule = []()
     {
         auto module = new UAlbertaBot::UAlbertaBotModule();
-        Config::StardustTestStrategyName = "9PoolSpeed";
+        UAlbertaBot::Config::StardustTestStrategyName = "9PoolSpeed";
         return module;
     };
     test.frameLimit = 5000;

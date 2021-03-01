@@ -16,7 +16,7 @@ TEST(Steamhammer, RunTwenty)
         };
         test.onStartOpponent = []()
         {
-            std::cout << "Steamhammer strategy: " << Config::Strategy::StrategyName << std::endl;
+            std::cout << "Steamhammer strategy: " << UAlbertaBot::Config::Strategy::StrategyName << std::endl;
 
             std::cout.setstate(std::ios_base::failbit);
             std::cerr.setstate(std::ios_base::failbit);
@@ -51,7 +51,7 @@ TEST(Steamhammer, 4PoolHard)
     test.opponentModule = []()
     {
         auto module = new UAlbertaBot::UAlbertaBotModule();
-        Config::StardustTestStrategyName = "4PoolHard";
+        UAlbertaBot::Config::StardustTestStrategyName = "4PoolHard";
         return module;
     };
     test.run();
