@@ -3,9 +3,10 @@
 #include "BW/BWData.h"
 #include "DemoAIModule.h"
 #include <chrono>
-#include <thread>
-#include <csignal>
-#include <execinfo.h>
+#include <future>
+//#include <thread>
+//#include <csignal>
+//#include <CallStack.h>
 #include <filesystem>
 #include <random>
 
@@ -132,7 +133,8 @@ namespace
     }
 
     void printBacktrace()
-    {
+    { // TODO: cross-platform shim
+        /*
         void *array[20];
         size_t size;
 
@@ -141,6 +143,7 @@ namespace
 
         // print out all the frames to stderr
         backtrace_symbols_fd(array, size, STDERR_FILENO);
+         */
     }
 
     void moveFileToReadIfExists(const std::string &filename)
@@ -209,7 +212,10 @@ void BWTest::run()
             scheduleInitialUnitCreation(myInitialUnits, myInitialUnitsByFrame),
             scheduleInitialUnitCreation(opponentInitialUnits, opponentInitialUnitsByFrame));
 
-    auto opponentPid = fork();
+    // auto opponentPid = fork();
+    // auto opponentThread = std::thread(&BWTest::runGame, true);
+    std::future<bool> opponentExited = std::async(&BWTest::runGame, this, true);
+    /*
     if (opponentPid == 0)
     {
         auto handler = [](int sig)
@@ -233,14 +239,24 @@ void BWTest::run()
     signal(SIGFPE, handler);
     signal(SIGSEGV, handler);
     signal(SIGABRT, handler);
-
+    */
     runGame(false);
 
     // Give the opponent 5 seconds to exit
+    const auto timeout = std::chrono::milliseconds(5000);
+    auto status = opponentExited.wait_for(timeout);
+    if (status == std::future_status::ready) {
+        std::cout << "Opponent thread exited" << std::endl;
+    } else {
+        std::cout << "Opponent thread timed out" << std::endl;
+        exit(0);
+    }
+    /*
     int tries = 0;
     while (true)
     {
-        if (waitpid(opponentPid, nullptr, WNOHANG) != -1)
+        // if (waitpid(opponentPid, nullptr, WNOHANG) != -1)
+        if (opponentExited.get())
         {
             std::cout << "Opponent process exited" << std::endl;
             break;
@@ -257,9 +273,10 @@ void BWTest::run()
 
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+     */
 }
 
-void BWTest::runGame(bool opponent)
+bool BWTest::runGame(bool opponent)
 {
     BW::GameOwner gameOwner;
     BWAPI::BroodwarImpl_handle h(gameOwner.getGame());
@@ -268,31 +285,31 @@ void BWTest::runGame(bool opponent)
     BWAPI::BroodwarImpl.bwgame.setMapFileName(map->filename);
     BWAPI::Race race = opponent ? opponentRace : myRace;
     h->createMultiPlayerGame([&]()
-                             {
-                                 if (h->self())
-                                 {
-                                     if (h->self()->getRace() != race) h->self()->setRace(race);
-                                 }
-                                 else
-                                 {
-                                     h->switchToPlayer(h->getPlayer(opponent ? 1 : 0));
-                                 }
+         {
+             if (h->self())
+             {
+                 if (h->self()->getRace() != race) h->self()->setRace(race);
+             }
+             else
+             {
+                 h->switchToPlayer(h->getPlayer(opponent ? 1 : 0));
+             }
 
-                                 int playerCount = 0;
-                                 for (int i = 0; i < BW::PLAYABLE_PLAYER_COUNT; ++i)
-                                 {
-                                     BWAPI::Player p = h->getPlayer(i);
-                                     if (p->getType() != BWAPI::PlayerTypes::Player
-                                         && p->getType() != BWAPI::PlayerTypes::Computer)
-                                         continue;
-                                     ++playerCount;
-                                 }
-                                 if (playerCount >= 2)
-                                 {
-                                     h->setRandomSeed(randomSeed);
-                                     h->startGame();
-                                 }
-                             });
+             int playerCount = 0;
+             for (int i = 0; i < BW::PLAYABLE_PLAYER_COUNT; ++i)
+             {
+                 BWAPI::Player p = h->getPlayer(i);
+                 if (p->getType() != BWAPI::PlayerTypes::Player
+                     && p->getType() != BWAPI::PlayerTypes::Computer)
+                     continue;
+                 ++playerCount;
+             }
+             if (playerCount >= 2)
+             {
+                 h->setRandomSeed(randomSeed);
+                 h->startGame();
+             }
+         });
 
     std::cout << "Game started" << (opponent ? " (opponent)" : "") << "! "
               << "framelimit=" << frameLimit
@@ -505,4 +522,5 @@ void BWTest::runGame(bool opponent)
         moveFileToReadIfExists("bwapi-data/write/omlocutus_startest.txt"); // Locutus
     }
     h->bwgame.leaveGame();
+    return true;
 }

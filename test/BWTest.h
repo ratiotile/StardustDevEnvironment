@@ -68,5 +68,5 @@ private:
     std::unordered_map<int, std::vector<UnitTypeAndPosition>> myInitialUnitsByFrame;
     std::unordered_map<int, std::vector<UnitTypeAndPosition>> opponentInitialUnitsByFrame;
 
-    void runGame(bool opponent);
+    bool runGame(bool opponent);
 };
