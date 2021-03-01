@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
 project(tests)
 
+set(gtest_force_shared_crt ON CACHE BOOL "")
+option(gtest_force_shared_crt "" ON)
 add_subdirectory(3rdparty/googletest)
+
 add_subdirectory(3rdparty/opponents/Steamhammer)
 add_subdirectory(3rdparty/opponents/Locutus)
 
@@ -45,7 +48,11 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(tests PUBLIC DEBUG=1)
 endif()
 
-target_link_libraries(tests gtest gtest_main BWAPILIB DemoAIModule Steamhammer Locutus)
+target_sources(tests
+    PRIVATE ${CMAKE_SOURCE_DIR}/src/Instrumentation/Log.cpp
+)
+
+target_link_libraries(tests gtest gtest_main BWAPILIB DemoAIModule Steamhammer Locutus DemoAIModule)
 #[target_compile_options(tests PRIVATE -Wall -Werror)]#
 
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/maps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

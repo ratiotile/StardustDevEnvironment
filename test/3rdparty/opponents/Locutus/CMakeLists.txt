@@ -17,6 +17,9 @@ set(LOCUTUS_INCLUDES
 include_directories(${LOCUTUS_INCLUDES})
 
 add_library(Locutus STATIC ${SRC_FILES} ${BOSS_SRC_FILES} ${BWTA_SRC_FILES} ${BWEM_SRC_FILES} ${BWEB_SRC_FILES})
+#if(MSVC)
+#    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+#endif(MSVC)
 
 target_link_libraries(Locutus BWAPILIB) #[ -L/usr/local/Cellar/llvm/8.0.0/lib c++fs ]#
 target_include_directories(Locutus SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/Locutus/Source)
