@@ -38,7 +38,7 @@ set_source_files_properties(
         $<TARGET_OBJECTS:BWAPICore>
         ${CMAKE_SOURCE_DIR}/3rdparty/openbw/bwapi/bwapi/OpenBWData/BW/BWData.cpp
         PROPERTIES
-        COMPILE_FLAGS "-w"
+        #[COMPILE_FLAGS "-w"]#
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -46,10 +46,20 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 endif()
 
 target_link_libraries(tests gtest gtest_main BWAPILIB DemoAIModule Steamhammer Locutus)
-target_compile_options(tests PRIVATE -Wall -Werror)
+#[target_compile_options(tests PRIVATE -Wall -Werror)]#
 
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/maps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bwapi-data/AI)
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/bwta DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bwapi-data/AI)
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/opponents/Steamhammer/Steamhammer_2.4.2.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bwapi-data/AI)
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/opponents/Locutus/Locutus.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bwapi-data/AI)
+
+IF(WIN32)
+    MESSAGE(STATUS "Setting #define WIN32")
+    ADD_COMPILE_DEFINITIONS(
+            WIN32       #[Timer.hpp keeps trying to include sys/time.h, maybe cmake is not #defining WIN32]#
+            NOMINMAX    #[windows.h max() macro causes compile errors]#
+    )
+    target_compile_definitions(Locutus PRIVATE WIN32 NOMINMAX)
+    target_compile_definitions(Steamhammer PRIVATE WIN32 NOMINMAX)
+ENDIF(WIN32)

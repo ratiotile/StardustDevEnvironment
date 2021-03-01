@@ -1,3 +1,4 @@
+#include <limits>
 #include "Common.h"
 #include "BuildingPlacer.h"
 #include "ProductionManager.h"
@@ -8,8 +9,11 @@
 
 using namespace Locutus;
 
+
 namespace { auto & bwemMap = BWEM::Map::Instance(); }
 namespace { auto & bwebMap = BWEB::Map::Instance(); }
+
+
 
 BuildingPlacer::BuildingPlacer()
     : _boxTop       (std::numeric_limits<int>::max())
