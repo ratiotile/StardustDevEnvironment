@@ -15,8 +15,7 @@ ELSE(MSVC)
 
     add_subdirectory(3rdparty/openbw/bwapi)
 ENDIF(MSVC)
-
-add_subdirectory(3rdparty/zstd-1.4.0/build/cmake)
+add_subdirectory(3rdparty/zstd/build/cmake)
 add_subdirectory(src)
 
 IF(NOT MSVC)
