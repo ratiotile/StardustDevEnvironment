@@ -1,3 +1,4 @@
+project(OpenBWData)
 
 option(OPENBW_ENABLE_UI "Enables support for the graphical user interface, requires SDL2")
 
@@ -5,7 +6,7 @@ find_path(OPENBW_DIR bwgame.h
   PATHS
   ENV OPENBW_DIR
 )
-
+set(OPENBW_DIR ../../../openbw)
 if (NOT OPENBW_DIR)
   message(FATAL_ERROR "Couldn't find openbw. Specify the path to it with the OPENBW_DIR variable")
 endif()
@@ -19,6 +20,7 @@ include_directories(
   ../Util/Source
   ../BWAPI/openbw
   ../BWAPI/Source
+  ../include
   ${OPENBW_DIR}
 )
 

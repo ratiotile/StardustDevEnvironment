@@ -55,7 +55,7 @@ add_library(BWAPI SHARED
   $<TARGET_OBJECTS:BWAPICore>
 )
 
-target_link_libraries(BWAPI BWAPILIB BWData)
+target_link_libraries(BWAPI BWAPILIB OpenBWData)
 
 set_property(TARGET BWAPI PROPERTY WINDOWS_EXPORT_ALL_SYMBOLS ON)
 

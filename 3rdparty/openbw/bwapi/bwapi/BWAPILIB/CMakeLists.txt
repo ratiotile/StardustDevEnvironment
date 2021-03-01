@@ -51,5 +51,6 @@ install(TARGETS BWAPILIB
   ARCHIVE DESTINATION lib
 )
 
+include_directories(system ../include)
 target_include_directories(BWAPILIB SYSTEM PUBLIC "${CMAKE_SOURCE_DIR}/3rdparty/openbw/bwapi/bwapi/include")
 target_compile_options(BWAPILIB PRIVATE -w)
