@@ -185,13 +185,13 @@ namespace
 
 namespace Maps
 {
-    std::vector<MapMetadata> Get(const std::string &search, unsigned int players)
+    std::vector<MapMetadata> Get(const std::string &search, int players)
     {
         std::vector<MapMetadata> result;
         for (auto &map : maps)
         {
             if (!search.empty() && map.filename.find(search) == std::string::npos) continue;
-            if (players > 0 && map.startLocationSeeds.size() != players) continue;
+            if (players > 0 && map.startLocationSeeds.size() != (unsigned int)players) continue;
 
             result.push_back(map);
         }

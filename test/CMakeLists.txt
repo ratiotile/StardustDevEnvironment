@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
+set(CMAKE_CXX_STANDARD 17)
+
 project(tests)
 
 add_subdirectory(3rdparty/googletest)
@@ -23,8 +25,17 @@ set(TEST_INCLUDES
         )
 include_directories(${TEST_INCLUDES})
 
-file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR} *.cpp)
-list(FILTER SRC_FILES EXCLUDE REGEX ".*3rdparty.*")
+#file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR} *.cpp)
+#list(FILTER SRC_FILES EXCLUDE REGEX ".*3rdparty.*")
+set(SRC_FILES
+    Maps.cpp
+    BWTest.cpp
+    Locutus.cpp
+    RushDefense.cpp
+    Steamhammer.cpp
+)
+
+#link_directories(TEST_INCLUDES)
 
 add_executable(tests
         $<TARGET_OBJECTS:BWAPIObj>
@@ -45,7 +56,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(tests PUBLIC DEBUG=1)
 endif()
 
-target_link_libraries(tests gtest gtest_main BWAPILIB DemoAIModule Steamhammer Locutus)
+target_link_libraries(tests PUBLIC ${CMAKE_DL_LIBS} gtest gtest_main BWAPILIB BWAPI DemoAIModule Steamhammer Locutus)
 target_compile_options(tests PRIVATE -Wall -Werror)
 
 file(COPY ${CMAKE_SOURCE_DIR}/test/3rdparty/maps DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
