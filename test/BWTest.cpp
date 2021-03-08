@@ -8,6 +8,8 @@
 #include <execinfo.h>
 #include <filesystem>
 #include <random>
+#include <iostream>
+#include <sstream>
 
 #include "Log.h"
 
@@ -148,10 +150,11 @@ namespace
         if (!std::filesystem::exists(filename)) return;
 
         std::filesystem::create_directories("bwapi-data/read");
-
+        std::ostringstream oss("bwapi-data/read/");
+        oss << filename.substr(filename.rfind('/') + 1);
         std::filesystem::rename(
-                filename,
-                (std::ostringstream() << "bwapi-data/read/" << filename.substr(filename.rfind('/') + 1)).str());
+                filename, oss.str());
+                //(std::ostringstream() << "bwapi-data/read/" << filename.substr(filename.rfind('/') + 1)).str());
     }
 
     void signalHandler(int sig, bool opponent)
@@ -436,7 +439,9 @@ void BWTest::runGame(bool opponent)
         auto result = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - start).count();
         std::cout << "Total game time: " << result << "s" << std::endl;
 
-        if (expectWin) EXPECT_TRUE(gameOwner.getGame().won());
+        if (expectWin){
+            EXPECT_TRUE(gameOwner.getGame().won());
+        }
 
         // Create an ID for this game based on the test case and timestamp
         std::ostringstream gameId;

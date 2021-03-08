@@ -4,6 +4,7 @@
 #include "MathUtil.h"
 #include "Logger.h"
 #include "Random.h"
+#include <cstring>
 
 Locutus::FastAPproximation fap;
 

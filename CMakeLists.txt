@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(StardustDevEnvironment)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_PARALLEL_LEVEL 3)
 
 IF(MSVC)
     add_definitions(-DWITHOUT_POSIX)

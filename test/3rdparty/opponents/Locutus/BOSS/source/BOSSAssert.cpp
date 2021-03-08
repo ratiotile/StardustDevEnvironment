@@ -1,5 +1,6 @@
 #include "BOSSAssert.h"
 #include "BOSSException.h"
+#include <string.h>
 
 using namespace BOSS;
 

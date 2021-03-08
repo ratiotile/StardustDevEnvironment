@@ -185,7 +185,7 @@ namespace
 
 namespace Maps
 {
-    std::vector<MapMetadata> Get(const std::string &search, int players)
+    std::vector<MapMetadata> Get(const std::string &search, unsigned int players)
     {
         std::vector<MapMetadata> result;
         for (auto &map : maps)
